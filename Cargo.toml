@@ -12,6 +12,6 @@ serde = {version = "*", features = ["derive"]}
 
 chrono = "0.4"
 
-diesel = { version = "1", features = ["postgres"]}
+diesel = { version = "1", features = ["postgres", "r2d2", "uuidv07", "chrono"]}
 uuid = {version = "*", features = ["serde", "v4"]}
 dotenv = "*"
