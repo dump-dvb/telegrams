@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::time::SystemTime;
+use std::hash::Hash;
+use std::hash::Hasher;
 
 use diesel::Queryable;
 //use diesel::Identifiable;
@@ -30,8 +32,14 @@ pub struct TelegramMetaInformation {
     pub telegram_type: u8,
 }
 
-#[derive(Deserialize, Serialize, Debug,
-         Queryable)]
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct AuthenticationMeta {
+    pub station: Uuid,
+    pub token: String
+}
+
+#[derive(Deserialize, Serialize, Debug, Queryable)]
 pub struct R09SaveTelegram {
     pub id: u64,
 
@@ -42,6 +50,16 @@ pub struct R09SaveTelegram {
     pub data: R09Telegram,
 }
 
+#[derive(Deserialize, Serialize, Debug, Queryable)]
+pub struct R09ReceiveTelegram {
+    #[serde(flatten)]
+    pub auth: AuthenticationMeta,
+
+    #[serde(flatten)]
+    pub data: R09Telegram,
+}
+
+
 impl R09SaveTelegram {
     pub fn from(telegram: R09Telegram, meta: TelegramMetaInformation) -> R09SaveTelegram {
         R09SaveTelegram {
@@ -49,6 +67,30 @@ impl R09SaveTelegram {
             data: telegram,
             meta_data: meta
         }
+    }
+}
+
+impl Hash for R09ReceiveTelegram {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.data.hash(state);
+    }
+}
+
+impl Hash for R09Telegram {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.delay.hash(state);
+        self.reporting_point.hash(state);
+        self.junction.hash(state);
+        self.direction.hash(state);
+        self.request_status.hash(state);
+        self.priority.hash(state);
+        self.direction_request.hash(state);
+        self.line.hash(state);
+        self.run_number.hash(state);
+        self.destination_number.hash(state);
+        self.train_length.hash(state);
+        self.vehicle_number.hash(state);
+        self.operator.hash(state);
     }
 }
 

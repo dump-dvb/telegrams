@@ -5,5 +5,5 @@ extern crate dotenv;
 pub mod schema;
 pub mod models;
 
-pub use models::{R09Telegram, R09SaveTelegram};
+pub use models::{R09Telegram, R09SaveTelegram, R09ReceiveTelegram};
 
