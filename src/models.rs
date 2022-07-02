@@ -36,7 +36,8 @@ pub struct TelegramMetaInformation {
 #[derive(Deserialize, Serialize, Debug)]
 pub struct AuthenticationMeta {
     pub station: Uuid,
-    pub token: String
+    pub token: String,
+    pub telegram_type: u8,
 }
 
 #[derive(Deserialize, Serialize, Debug, Queryable)]
