@@ -2,6 +2,7 @@ pub mod dvb_dump {
   tonic::include_proto!("dvbdump");
 }
 
+use super::schema::r09_telegrams;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::time::SystemTime;
@@ -45,15 +46,32 @@ pub struct AuthenticationMeta {
     pub telegram_type: u8,
 }
 
-#[derive(Deserialize, Serialize, Debug, Queryable, Clone)]
+#[derive(Deserialize, Serialize, Debug, Queryable, Clone, Insertable)]
+#[table_name="r09_telegrams"]
 pub struct R09SaveTelegram {
-    pub id: u64,
-
-    #[serde(flatten)]
-    pub meta_data: TelegramMetaInformation,
-
-    #[serde(flatten)]
-    pub data: R09Telegram,
+    pub id: i64,
+                                                                    
+    pub time: SystemTime,
+    pub station: Uuid,
+    pub region: i64, // foreign key references regions              
+    pub telegram_type: i16,                                         
+                                                                    
+    pub delay: Option<i32>,                                         
+    pub reporting_point: i32,                                       
+    pub junction: i32, //derived from  reporting_point              
+                       //                                           
+    pub direction: i16, //derived from reporting_point              
+    pub request_status: i16, //derived from reporting_point         
+    pub priority: Option<i16>,                                      
+                                                                    
+    pub direction_request: Option<i16>,                             
+    pub line: Option<i32>,                                          
+    pub run_number: Option<i32>,                                    
+                                                                    
+    pub destination_number: Option<i32>,                            
+    pub train_length: Option<i16>,                                  
+    pub vehicle_number: Option<i32>,                                
+    pub operator: Option<i16>,                                      
 }
 
 #[derive(Deserialize, Serialize, Debug, Queryable, Clone)]
@@ -70,8 +88,25 @@ impl R09SaveTelegram {
     pub fn from(telegram: R09Telegram, meta: TelegramMetaInformation) -> R09SaveTelegram {
         R09SaveTelegram {
             id: 0,
-            data: telegram,
-            meta_data: meta
+
+            time: meta.time,
+            station: meta.station,
+            region: meta.region as i64,
+            telegram_type: meta.telegram_type as i16,
+
+            delay: telegram.delay,
+            reporting_point: telegram.reporting_point as i32,
+            junction: telegram.junction as i32,
+            direction: telegram.direction as i16,
+            request_status: telegram.request_status as i16,
+            priority: telegram.priority.map(|x| x as i16),
+            direction_request: telegram.direction_request.map(|x| x as i16),
+            line: telegram.line.map(|x| x as i32),
+            run_number: telegram.run_number.map(|x| x as i32),
+            destination_number: telegram.destination_number.map(|x| x as i32),
+            train_length: telegram.train_length.map(|x| x as i16),
+            vehicle_number: telegram.vehicle_number.map(|x| x as i32),
+            operator: telegram.operator.map(|x| x as i16),
         }
     }
 }
