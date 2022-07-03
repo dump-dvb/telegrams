@@ -2,17 +2,19 @@ pub mod dvb_dump {
   tonic::include_proto!("dvbdump");
 }
 
-use super::schema::r09_telegrams;
+pub use dvb_dump::R09GrpcTelegram;
+
+use super::super::schema::r09_telegrams;
+use super::{AuthenticationMeta, TelegramMetaInformation};
+
+use diesel::{Queryable, Insertable};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+
 use std::time::SystemTime;
 use std::hash::Hash;
 use std::hash::Hasher;
-
-use diesel::{Queryable, Insertable};
-
-pub use dvb_dump::receives_telegrams_client::ReceivesTelegramsClient;
-pub use dvb_dump::R09GrpcTelegram;
+use std::fmt;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct R09Telegram {
@@ -31,47 +33,29 @@ pub struct R09Telegram {
     pub operator: Option<u8>,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct TelegramMetaInformation {
-    pub time: SystemTime,
-    pub station: Uuid,
-    pub region: u64, // foreign key references regions
-    pub telegram_type: u8,
-}
-
-#[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct AuthenticationMeta {
-    pub station: Uuid,
-    pub token: String,
-    pub telegram_type: u8,
-}
-
-#[derive(Deserialize, Serialize, Debug, Queryable, Clone, Insertable)]
+#[derive(Deserialize, Serialize, Queryable, Insertable, Clone, PartialEq)]
 #[table_name="r09_telegrams"]
 pub struct R09SaveTelegram {
     pub id: i64,
-                                                                    
+
     pub time: SystemTime,
     pub station: Uuid,
-    pub region: i64, // foreign key references regions              
-    pub telegram_type: i16,                                         
-                                                                    
-    pub delay: Option<i32>,                                         
-    pub reporting_point: i32,                                       
-    pub junction: i32, //derived from  reporting_point              
-                       //                                           
-    pub direction: i16, //derived from reporting_point              
-    pub request_status: i16, //derived from reporting_point         
-    pub priority: Option<i16>,                                      
-                                                                    
-    pub direction_request: Option<i16>,                             
-    pub line: Option<i32>,                                          
-    pub run_number: Option<i32>,                                    
-                                                                    
-    pub destination_number: Option<i32>,                            
-    pub train_length: Option<i16>,                                  
-    pub vehicle_number: Option<i32>,                                
-    pub operator: Option<i16>,                                      
+    pub region: i64, // foreign key references regions
+    pub telegram_type: i16,
+
+    pub delay: Option<i32>,
+    pub reporting_point: i32,
+    pub junction: i32, //derived from  reporting_point
+    pub direction: i16, //derived from reporting_point
+    pub request_status: i16, //derived from reporting_point
+    pub priority: Option<i16>,
+    pub direction_request: Option<i16>,
+    pub line: Option<i32>,
+    pub run_number: Option<i32>,
+    pub destination_number: Option<i32>,
+    pub train_length: Option<i16>,
+    pub vehicle_number: Option<i32>,
+    pub operator: Option<i16>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Queryable, Clone)]
@@ -132,6 +116,19 @@ impl Hash for R09Telegram {
         self.train_length.hash(state);
         self.vehicle_number.hash(state);
         self.operator.hash(state);
+    }
+}
+
+impl fmt::Display for R09Telegram {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "Line {:#?} Run {:#?} Destination {:#?} - {}",
+            self.line,
+            self.run_number,
+            self.destination_number,
+            self.request_status
+        )
     }
 }
 

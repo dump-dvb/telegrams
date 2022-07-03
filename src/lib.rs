@@ -6,10 +6,12 @@ pub mod schema;
 pub mod models;
 
 pub use models::{
-    R09Telegram,
-    R09SaveTelegram,
-    R09ReceiveTelegram,
-    R09GrpcTelegram,
+    r09::{
+        R09Telegram,
+        R09SaveTelegram,
+        R09ReceiveTelegram,
+        R09GrpcTelegram,
+    },
     TelegramMetaInformation,
     AuthenticationMeta,
     ReceivesTelegramsClient,
