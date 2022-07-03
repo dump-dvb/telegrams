@@ -4,10 +4,9 @@ use std::time::SystemTime;
 use std::hash::Hash;
 use std::hash::Hasher;
 
-use diesel::Queryable;
-//use diesel::Identifiable;
+use diesel::{Queryable, Insertable};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct R09Telegram {
     pub delay: Option<i32>,
     pub reporting_point: u32,
@@ -24,7 +23,7 @@ pub struct R09Telegram {
     pub operator: Option<u8>,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct TelegramMetaInformation {
     pub time: SystemTime,
     pub station: Uuid,
@@ -32,15 +31,14 @@ pub struct TelegramMetaInformation {
     pub telegram_type: u8,
 }
 
-
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct AuthenticationMeta {
     pub station: Uuid,
     pub token: String,
     pub telegram_type: u8,
 }
 
-#[derive(Deserialize, Serialize, Debug, Queryable)]
+#[derive(Deserialize, Serialize, Debug, Queryable, Clone)]
 pub struct R09SaveTelegram {
     pub id: u64,
 
@@ -51,7 +49,7 @@ pub struct R09SaveTelegram {
     pub data: R09Telegram,
 }
 
-#[derive(Deserialize, Serialize, Debug, Queryable)]
+#[derive(Deserialize, Serialize, Debug, Queryable, Clone)]
 pub struct R09ReceiveTelegram {
     #[serde(flatten)]
     pub auth: AuthenticationMeta,

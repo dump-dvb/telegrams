@@ -1,6 +1,6 @@
 
 table! {
-    r09_save_telegram (id) {
+    r09_save_telegrams (id) {
         id -> BigSerial,
         time -> Timestamp,
         station -> Uuid,
