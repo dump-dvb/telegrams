@@ -12,6 +12,6 @@ pub use models::{
     R09GrpcTelegram,
     TelegramMetaInformation,
     AuthenticationMeta,
-    ReceivesTelegramsClient
+    ReceivesTelegramsClient,
 };
 
