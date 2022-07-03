@@ -18,6 +18,7 @@ use std::fmt;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct R09Telegram {
+    pub telegram_type: u8,
     pub delay: Option<i32>,
     pub reporting_point: u32,
     pub junction: u32, //derived from  reporting_point
@@ -41,8 +42,8 @@ pub struct R09SaveTelegram {
     pub time: SystemTime,
     pub station: Uuid,
     pub region: i64, // foreign key references regions
-    pub telegram_type: i16,
 
+    pub telegram_type: i16,
     pub delay: Option<i32>,
     pub reporting_point: i32,
     pub junction: i32, //derived from  reporting_point
@@ -76,8 +77,9 @@ impl R09SaveTelegram {
             time: meta.time,
             station: meta.station,
             region: meta.region as i64,
-            telegram_type: meta.telegram_type as i16,
 
+
+            telegram_type: telegram.telegram_type as i16,
             delay: telegram.delay,
             reporting_point: telegram.reporting_point as i32,
             junction: telegram.junction as i32,
@@ -103,6 +105,7 @@ impl Hash for R09ReceiveTelegram {
 
 impl Hash for R09Telegram {
     fn hash<H: Hasher>(&self, state: &mut H) {
+        self.telegram_type.hash(state);
         self.delay.hash(state);
         self.reporting_point.hash(state);
         self.junction.hash(state);
@@ -123,7 +126,8 @@ impl fmt::Display for R09Telegram {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Line {:#?} Run {:#?} Destination {:#?} - {}",
+            "Type {} Line {:#?} Run {:#?} Destination {:#?} - {}",
+            self.telegram_type,
             self.line,
             self.run_number,
             self.destination_number,
@@ -138,8 +142,8 @@ impl R09GrpcTelegram {
             time: meta.time.elapsed().unwrap().as_secs(),
             station: meta.station.to_string(),
             region: meta.region,
-            telegram_type: meta.telegram_type as u32,
 
+            telegram_type: telegram.telegram_type as u32,
             delay: telegram.delay,
             reporting_point: telegram.reporting_point,
             junction: telegram.junction as u32,
