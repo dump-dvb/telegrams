@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package dvbdump;
+
+service ReceivesTelegrams {
+  rpc receive_r09 (R09GrpcTelegram) returns (ReturnCode) {}
+}
+
+message R09GrpcTelegram {
+    uint64 time = 1;
+    string station = 2;
+    uint64 region = 3;
+    uint32 telegram_type = 4;
+    optional int32 delay = 5;
+    uint32 reporting_point = 6;
+    uint32 junction = 7;
+    uint32 direction = 8;
+    uint32 request_status = 9;
+    optional uint32 priority = 10;
+    optional uint32 direction_request = 11;
+    optional uint32 line = 12;
+    optional uint32 run_number = 13;
+    optional uint32 destination_number = 14;
+    optional uint32 train_length = 15;
+    optional uint32 vehicle_number = 16;
+    optional uint32 operator = 17;
+}
+
+message ReturnCode {
+  int32 status = 1;
+}

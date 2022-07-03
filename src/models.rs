@@ -1,3 +1,7 @@
+pub mod dvb_dump {
+  tonic::include_proto!("dvbdump");
+}
+
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::time::SystemTime;
@@ -5,6 +9,9 @@ use std::hash::Hash;
 use std::hash::Hasher;
 
 use diesel::{Queryable, Insertable};
+
+pub use dvb_dump::receives_telegrams_client::ReceivesTelegramsClient;
+pub use dvb_dump::R09GrpcTelegram;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct R09Telegram {
@@ -90,6 +97,31 @@ impl Hash for R09Telegram {
         self.train_length.hash(state);
         self.vehicle_number.hash(state);
         self.operator.hash(state);
+    }
+}
+
+impl R09GrpcTelegram {
+    pub fn from(telegram: R09ReceiveTelegram, meta: TelegramMetaInformation) -> R09GrpcTelegram {
+        R09GrpcTelegram {
+            time: meta.time.elapsed().unwrap().as_secs(),
+            station: meta.station.to_string(),
+            region: meta.region,
+            telegram_type: meta.telegram_type as u32,
+
+            delay: telegram.data.delay,
+            reporting_point: telegram.data.reporting_point,
+            junction: telegram.data.junction as u32,
+            direction: telegram.data.direction as u32,
+            request_status: telegram.data.request_status as u32,
+            priority: telegram.data.priority.map(|x| x as u32),
+            direction_request: telegram.data.direction_request.map(|x| x as u32),
+            line: telegram.data.line.map(|x| x as u32),
+            run_number: telegram.data.run_number.map(|x| x as u32),
+            destination_number: telegram.data.destination_number.map(|x| x as u32),
+            train_length: telegram.data.train_length.map(|x| x as u32),
+            vehicle_number: telegram.data.vehicle_number.map(|x| x as u32),
+            operator: telegram.data.operator.map(|x| x as u32),
+        }
     }
 }
 

@@ -9,7 +9,9 @@ pub use models::{
     R09Telegram,
     R09SaveTelegram,
     R09ReceiveTelegram,
+    R09GrpcTelegram,
     TelegramMetaInformation,
-    AuthenticationMeta
+    AuthenticationMeta,
+    ReceivesTelegramsClient
 };
 
