@@ -11,12 +11,11 @@ pub use models::{
         R09SaveTelegram,
         R09ReceiveTelegram,
         R09GrpcTelegram,
-        ReceivesTelegrams,
-        ReceivesTelegramsClient
     },
     TelegramMetaInformation,
     AuthenticationMeta,
     ReceivesTelegramsClient,
+    ReceivesTelegrams,
     ReturnCode
 };
 

@@ -4,7 +4,7 @@ table! {
         id -> BigSerial,
         time -> Timestamp,
         station -> Uuid,
-        region -> Varchar,
+        region -> BigInt,
         telegram_type -> SmallInt,
         delay -> Nullable<Integer>,
         reporting_point -> Integer,

@@ -6,7 +6,7 @@ pub mod dvb_dump {
 
 pub use dvb_dump::{ReturnCode};
 pub use dvb_dump::receives_telegrams_client::ReceivesTelegramsClient;
-pub use dvb_dump::receives_telegrams_server::ReceivesTelegrams,
+pub use dvb_dump::receives_telegrams_server::ReceivesTelegrams;
 
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -16,7 +16,7 @@ use std::time::SystemTime;
 pub struct TelegramMetaInformation {
     pub time: SystemTime,
     pub station: Uuid,
-    pub region: String, // foreign key references regions
+    pub region: u64, // foreign key references regions
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]

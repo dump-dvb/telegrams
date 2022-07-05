@@ -43,7 +43,7 @@ pub struct R09SaveTelegram {
 
     pub time: SystemTime,
     pub station: Uuid,
-    pub region: u64, // foreign key references regions
+    pub region: i64, // foreign key references regions
 
     pub telegram_type: i16,
     pub delay: Option<i32>,
@@ -86,8 +86,7 @@ impl R09SaveTelegram {
 
             time: meta.time,
             station: meta.station,
-            region: meta.region,
-
+            region: meta.region as i64,
 
             telegram_type: telegram.telegram_type as i16,
             delay: telegram.delay,
