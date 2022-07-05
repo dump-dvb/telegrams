@@ -3,11 +3,13 @@ pub mod dvb_dump {
 }
 
 pub use dvb_dump::R09GrpcTelegram;
+use stop_names::Stop;
 
 use super::super::schema::r09_telegrams;
 use super::{AuthenticationMeta, TelegramMetaInformation};
 
 use diesel::{Queryable, Insertable};
+use serde::ser::{SerializeStruct, Serializer};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -68,6 +70,14 @@ pub struct R09ReceiveTelegram {
     pub data: R09Telegram,
 }
 
+#[derive(Debug, Serialize)]
+pub struct WebSocketTelegram {
+    #[serde(flatten)]
+    pub reduced: R09GrpcTelegram,
+
+    #[serde(flatten)]
+    pub meta_data: Stop,
+}
 
 impl R09SaveTelegram {
     pub fn from(telegram: R09Telegram, meta: TelegramMetaInformation) -> R09SaveTelegram {
@@ -133,6 +143,77 @@ impl fmt::Display for R09Telegram {
             self.destination_number,
             self.request_status
         )
+    }
+}
+
+
+/*
+ *  uint64 time = 1;
+    string station = 2;
+    string region = 3;
+    uint32 telegram_type = 4;
+    optional int32 delay = 5;
+    uint32 reporting_point = 6;
+    uint32 junction = 7;
+    uint32 direction = 8;
+    uint32 request_status = 9;
+    optional uint32 priority = 10;
+    optional uint32 direction_request = 11;
+    optional uint32 line = 12;
+    optional uint32 run_number = 13;
+    optional uint32 destination_number = 14;
+    optional uint32 train_length = 15;
+    optional uint32 vehicle_number = 16;
+    optional uint32 operator = 17;
+*/
+
+impl Serialize for R09GrpcTelegram {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut s = serializer.serialize_struct("R09GrpcTelegram", 17)?;
+
+        s.serialize_field("time", &self.time)?;
+        s.serialize_field("station", &self.station)?;
+        s.serialize_field("region", &self.region)?;
+        s.serialize_field("telegram_type", &self.telegram_type)?;
+        
+        self.delay.map(|value| {
+            s.serialize_field("delay", &value).ok();
+        });
+
+        s.serialize_field("reporting_point", &self.reporting_point)?;
+        s.serialize_field("junction", &self.junction)?;
+        s.serialize_field("direction", &self.direction)?;
+        s.serialize_field("request_status", &self.request_status)?;
+
+        self.priority.map(|value| {
+            s.serialize_field("priority", &value).ok();
+        });
+        self.direction_request.map(|value| {
+            s.serialize_field("direction_request", &value).ok();
+        });
+        self.line.map(|value| {
+            s.serialize_field("line", &value).ok();
+        });
+        self.run_number.map(|value| {
+            s.serialize_field("run_number", &value).ok();
+        });
+        self.destination_number.map(|value| {
+            s.serialize_field("destination_number", &value).ok();
+        });
+        self.train_length.map(|value| {
+            s.serialize_field("train_length", &value).ok();
+        });
+        self.vehicle_number.map(|value| {
+            s.serialize_field("vehicle_number", &value).ok();
+        });
+        self.operator.map(|value| {
+            s.serialize_field("operator", &value).ok();
+        });
+
+        s.end()
     }
 }
 
