@@ -4,6 +4,7 @@ pub mod dvb_dump {
   tonic::include_proto!("dvbdump");
 }
 
+pub use dvb_dump::{ReturnCode};
 pub use dvb_dump::receives_telegrams_client::ReceivesTelegramsClient;
 
 use serde::{Deserialize, Serialize};

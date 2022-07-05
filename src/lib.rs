@@ -15,5 +15,6 @@ pub use models::{
     TelegramMetaInformation,
     AuthenticationMeta,
     ReceivesTelegramsClient,
+    ReturnCode
 };
 
