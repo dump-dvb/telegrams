@@ -11,6 +11,7 @@ pub use models::{
         R09SaveTelegram,
         R09ReceiveTelegram,
         R09GrpcTelegram,
+        dvb_dump::receives_telegrams_server::ReceivesTelegrams
     },
     TelegramMetaInformation,
     AuthenticationMeta,
