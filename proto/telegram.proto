@@ -9,7 +9,7 @@ service ReceivesTelegrams {
 message R09GrpcTelegram {
     uint64 time = 1;
     string station = 2;
-    string region = 3;
+    uint64 region = 3;
     uint32 telegram_type = 4;
     optional int32 delay = 5;
     uint32 reporting_point = 6;
