@@ -6,6 +6,7 @@ pub mod dvb_dump {
 
 pub use dvb_dump::{ReturnCode};
 pub use dvb_dump::receives_telegrams_client::ReceivesTelegramsClient;
+pub use dvb_dump::receives_telegrams_server::ReceivesTelegrams,
 
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
