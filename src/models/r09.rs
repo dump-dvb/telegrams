@@ -1,8 +1,4 @@
-pub mod dvb_dump {
-  tonic::include_proto!("dvbdump");
-}
-
-pub use dvb_dump::{R09GrpcTelegram};
+use super::{R09GrpcTelegram};
 use stop_names::Stop;
 
 use super::super::schema::r09_telegrams;

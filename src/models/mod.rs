@@ -4,7 +4,7 @@ pub mod dvb_dump {
   tonic::include_proto!("dvbdump");
 }
 
-pub use dvb_dump::{ReturnCode};
+pub use dvb_dump::{ReturnCode, R09GrpcTelegram};
 pub use dvb_dump::receives_telegrams_client::ReceivesTelegramsClient;
 pub use dvb_dump::receives_telegrams_server::ReceivesTelegrams;
 
