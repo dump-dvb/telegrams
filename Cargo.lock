@@ -134,6 +134,7 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits",
+ "serde",
  "time",
  "winapi",
 ]
@@ -860,9 +861,10 @@ dependencies = [
 
 [[package]]
 name = "stop-names"
-version = "0.1.0"
-source = "git+https://github.com/dump-dvb/stop-names#0238c55c293443370b674ab181dcd0f33e26144a"
+version = "0.2.0"
+source = "git+https://github.com/dump-dvb/stop-names#98f3c0dd7962573de291ec50e886393dc6380502"
 dependencies = [
+ "chrono",
  "serde",
  "serde_json",
 ]
@@ -886,7 +888,7 @@ checksum = "20518fe4a4c9acf048008599e464deb21beeae3d3578418951a189c235a7a9a8"
 
 [[package]]
 name = "telegrams"
-version = "0.1.9"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "diesel",

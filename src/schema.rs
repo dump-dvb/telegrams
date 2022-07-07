@@ -1,4 +1,3 @@
-
 table! {
     r09_telegrams (id) {
         id -> BigSerial,

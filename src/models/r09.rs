@@ -1,26 +1,26 @@
-use super::{R09GrpcTelegram};
-use stop_names::Stop;
+use stop_names::TransmissionPosition;
 
+use super::R09GrpcTelegram;
 use super::super::schema::r09_telegrams;
 use super::{AuthenticationMeta, TelegramMetaInformation};
 
-use diesel::{Queryable, Insertable};
+use diesel::{Insertable, Queryable};
 use serde::ser::{SerializeStruct, Serializer};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use std::time::SystemTime;
+use std::fmt;
 use std::hash::Hash;
 use std::hash::Hasher;
-use std::fmt;
+use std::time::SystemTime;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct R09Telegram {
     pub telegram_type: u8,
     pub delay: Option<i32>,
     pub reporting_point: u32,
-    pub junction: u32, //derived from  reporting_point
-    pub direction: u8, //derived from reporting_point
+    pub junction: u32,      //derived from  reporting_point
+    pub direction: u8,      //derived from reporting_point
     pub request_status: u8, //derived from reporting_point
     pub priority: Option<u8>,
     pub direction_request: Option<u8>,
@@ -33,7 +33,7 @@ pub struct R09Telegram {
 }
 
 #[derive(Deserialize, Serialize, Queryable, Insertable, Clone, PartialEq)]
-#[table_name="r09_telegrams"]
+#[table_name = "r09_telegrams"]
 pub struct R09SaveTelegram {
     pub id: i64,
 
@@ -44,8 +44,8 @@ pub struct R09SaveTelegram {
     pub telegram_type: i16,
     pub delay: Option<i32>,
     pub reporting_point: i32,
-    pub junction: i32, //derived from  reporting_point
-    pub direction: i16, //derived from reporting_point
+    pub junction: i32,       //derived from  reporting_point
+    pub direction: i16,      //derived from reporting_point
     pub request_status: i16, //derived from reporting_point
     pub priority: Option<i16>,
     pub direction_request: Option<i16>,
@@ -72,7 +72,7 @@ pub struct WebSocketTelegram {
     pub reduced: R09GrpcTelegram,
 
     #[serde(flatten)]
-    pub meta_data: Stop,
+    pub meta_data: TransmissionPosition,
 }
 
 impl R09SaveTelegram {
@@ -141,27 +141,6 @@ impl fmt::Display for R09Telegram {
     }
 }
 
-
-/*
- *  uint64 time = 1;
-    string station = 2;
-    string region = 3;
-    uint32 telegram_type = 4;
-    optional int32 delay = 5;
-    uint32 reporting_point = 6;
-    uint32 junction = 7;
-    uint32 direction = 8;
-    uint32 request_status = 9;
-    optional uint32 priority = 10;
-    optional uint32 direction_request = 11;
-    optional uint32 line = 12;
-    optional uint32 run_number = 13;
-    optional uint32 destination_number = 14;
-    optional uint32 train_length = 15;
-    optional uint32 vehicle_number = 16;
-    optional uint32 operator = 17;
-*/
-
 impl Serialize for R09GrpcTelegram {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -173,7 +152,7 @@ impl Serialize for R09GrpcTelegram {
         s.serialize_field("station", &self.station)?;
         s.serialize_field("region", &self.region)?;
         s.serialize_field("telegram_type", &self.telegram_type)?;
-        
+
         self.delay.map(|value| {
             s.serialize_field("delay", &value).ok();
         });
@@ -236,4 +215,3 @@ impl R09GrpcTelegram {
         }
     }
 }
-
