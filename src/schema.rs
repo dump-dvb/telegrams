@@ -3,7 +3,7 @@ table! {
         id -> BigSerial,
         time -> Timestamp,
         station -> Uuid,
-        region -> BigInt,
+        region -> Text,
         telegram_type -> SmallInt,
         delay -> Nullable<Integer>,
         reporting_point -> Integer,
