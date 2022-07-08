@@ -4,7 +4,7 @@ version = "0.2.0"
 edition = "2021"
 
 [dependencies]
-stop-names = { version = "0.2.0", git = "https://github.com/dump-dvb/stop-names" }
+stop-names = { version = "0.3", git = "https://github.com/dump-dvb/stop-names" }
 
 serde_json = "1.0"
 serde = {version = "*", features = ["derive"]}
