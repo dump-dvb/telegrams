@@ -1,4 +1,4 @@
-use stop_names::TransmissionPosition;
+use stop_names::{TransmissionPosition, R09Types};
 
 use super::R09GrpcTelegram;
 use super::super::schema::r09_telegrams;
@@ -14,9 +14,10 @@ use std::hash::Hash;
 use std::hash::Hasher;
 use std::time::SystemTime;
 
+
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct R09Telegram {
-    pub telegram_type: u8,
+    pub telegram_type: R09Types,
     pub delay: Option<i32>,
     pub reporting_point: u32,
     pub junction: u32,      //derived from  reporting_point
@@ -131,7 +132,7 @@ impl fmt::Display for R09Telegram {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Type {} Line {:#?} Run {:#?} Destination {:#?} - {}",
+            "Type {:?} Line {:#?} Run {:#?} Destination {:#?} - {}",
             self.telegram_type,
             self.line,
             self.run_number,
