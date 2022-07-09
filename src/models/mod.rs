@@ -17,7 +17,7 @@ use uuid::Uuid;
 pub struct TelegramMetaInformation {
     pub time: SystemTime,
     pub station: Uuid,
-    pub region: String, // foreign key references regions
+    pub region: i32, // foreign key references regions
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
