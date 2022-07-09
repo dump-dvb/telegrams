@@ -289,9 +289,9 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.12.1"
+version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db0d4cf898abf0081f964436dc980e96670a0f36863e4b83aaacdb65c9d7ccc3"
+checksum = "607c8a29735385251a339424dd462993c0fed8fa09d378f259377df08c126022"
 
 [[package]]
 name = "heck"
@@ -861,8 +861,8 @@ dependencies = [
 
 [[package]]
 name = "stop-names"
-version = "0.3.1"
-source = "git+https://github.com/dump-dvb/stop-names#6abf93278e2baf456b44425f211b5bb883ecabd0"
+version = "0.4.0"
+source = "git+https://github.com/dump-dvb/stop-names#9d1b803b2be3230ee52400bb6b6300bd54271b98"
 dependencies = [
  "chrono",
  "serde",
