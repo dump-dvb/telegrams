@@ -7,7 +7,7 @@ pub mod schema;
 pub mod station;
 
 pub use models::{
-    r09::{R09ReceiveTelegram, R09SaveTelegram, R09Telegram},
+    r09::{R09ReceiveTelegram, R09SaveTelegram, R09Telegram, R09WebSocketTelegram},
     AuthenticationMeta, R09GrpcTelegram, ReceivesTelegrams, ReceivesTelegramsClient,
     ReceivesTelegramsServer, ReturnCode, TelegramMetaInformation,
 };

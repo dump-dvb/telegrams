@@ -68,7 +68,7 @@ pub struct R09ReceiveTelegram {
 }
 
 #[derive(Debug, Serialize)]
-pub struct WebSocketTelegram {
+pub struct R09WebSocketTelegram {
     #[serde(flatten)]
     pub reduced: R09GrpcTelegram,
 
