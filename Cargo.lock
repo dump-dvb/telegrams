@@ -888,7 +888,7 @@ checksum = "20518fe4a4c9acf048008599e464deb21beeae3d3578418951a189c235a7a9a8"
 
 [[package]]
 name = "telegrams"
-version = "0.3.1"
+version = "0.4.0"
 dependencies = [
  "chrono",
  "diesel",

@@ -36,7 +36,7 @@ pub struct R09Telegram {
 #[derive(Deserialize, Serialize, Queryable, Insertable, Clone, PartialEq)]
 #[table_name = "r09_telegrams"]
 pub struct R09SaveTelegram {
-    pub id: i64,
+    pub id: Option<i64>,
 
     pub time: SystemTime,
     pub station: Uuid,
@@ -79,7 +79,7 @@ pub struct WebSocketTelegram {
 impl R09SaveTelegram {
     pub fn from(telegram: R09Telegram, meta: TelegramMetaInformation) -> R09SaveTelegram {
         R09SaveTelegram {
-            id: 0,
+            id: None,
 
             time: meta.time,
             station: meta.station,
