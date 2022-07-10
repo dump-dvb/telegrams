@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub struct RadioStation {
     pub id: Uuid,
     pub name: String,
-    pub region: String,
+    pub region: u32,
     pub lat: f64,
     pub lon: f64
 }
